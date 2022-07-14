@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "../dist/client",
+    "lib": ["es2015", "DOM"]
+  },
+  "exclude": [
+    "server"
+  ]
+}

@@ -1,17 +1,21 @@
 {
-  "name": "typescript-course",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/main.js",
+    "start": "node ../dist/server/main.js",
     "build": "tsc",
     "watch": "tsc -w"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.4"
   }
 }
