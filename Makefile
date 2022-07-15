@@ -1,3 +1,6 @@
+#
+# Client
+#
 build-client:
 	cd client && npm run build
 
@@ -7,6 +10,9 @@ watch-client:
 run-client:
 	cd client && npm run start
 
+#
+# Server
+#
 build-server:
 	cd server && npm run build
 
@@ -15,3 +21,9 @@ watch-server:
 
 run-server:
 	cd server && npm run start
+
+#
+# Watcher
+#
+watch:
+	nodemon dist/server/main.js

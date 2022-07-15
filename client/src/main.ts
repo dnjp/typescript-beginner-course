@@ -44,7 +44,7 @@ const user: IUser = {
 
 const user2: IUser = {
   name: 'Jack',
-  getMessage: function (): string {
+  getMessage: function(): string {
     return 'hello ' + this.name;
   }
 };
@@ -168,3 +168,153 @@ someElement.addEventListener('blur', (event: Event) => {
   const target: HTMLInputElement = event.target as HTMLInputElement;
   console.log('event', target.value);
 });
+
+//
+// Classes
+//
+
+interface IAUser {
+  getFullName(): string;
+}
+
+class User implements IAUser {
+  protected firstName: string;
+  protected lastName: string;
+  readonly id: number;
+  static readonly maxAge = 50;
+
+  constructor(first: string, last: string, num: number) {
+    this.firstName = first;
+    this.lastName = last;
+    this.id = num;
+  }
+
+  // this does not work because id is readonly
+  // updateId(): void {
+  //   this.id += 1; 
+  // }
+
+  getFullName(): string {
+    return this.firstName + ' ' + this.lastName;
+  }
+};
+
+const u1: User = new User('daniel', 'posthuma', 1);
+console.log(u1.getFullName());
+// console.log(u1.firstName); this does not compile because firstName is private
+console.log('max age', User.maxAge);
+
+class Admin extends User {
+  private editor: string;
+
+  setEditor(editor: string): void {
+    this.editor = editor;
+  }
+
+  getEditor(): string {
+    return this.editor;
+  }
+}
+
+const admin: Admin = new Admin('foo', 'bar', 2);
+
+console.log(admin.getFullName());
+admin.setEditor('daniel');
+console.log('admin', admin.getEditor());
+
+//
+// Generics
+//
+
+const myAppend = <T>(el: T, list: readonly T[]): T[] => {
+  return [...list, el]
+}
+
+const updatedArray: string[] = myAppend<string>('baz', ['foo', 'bar'])
+console.log(updatedArray);
+
+const searchstr = 'foo';
+
+// const _hasSearchedString = any<string>(
+//   (el: string): boolean => el.contains(searchstr),
+//   ['foo', 'bar', 'baz']
+// )
+
+// takes a generic T type, specifying that only
+// an object is allowed
+const addId = <T extends Object>(obj: T) => {
+  const id: string = Math.random().toString(16).slice(2, 16);
+  return {
+    ...obj,
+    id,
+  }
+}
+
+interface UserInterface<T, V> {
+  name: string;
+  data: T;
+  meta: V;
+};
+
+const jack: UserInterface<{ meta: string }, string> = {
+  name: "Jack",
+  data: {
+    meta: "foo"
+  },
+  meta: 'bar'
+}
+
+const result = addId<(UserInterface<{ meta: string }, string>)>(jack);
+console.log(result);
+
+const result2 = addId<string>("jack");
+console.log(result2);
+
+const john: UserInterface<string[], string> = {
+  name: "john",
+  data: ["foo", "bar", "baz"],
+  meta: "meta"
+}
+console.log(john);
+
+
+//
+// Enums
+//
+
+//// Enums can have values
+enum Status {
+  NotStarted = "not_started",
+  InProgress = 'in_progress',
+  Done = 'done'
+};
+
+//// Enums do not need to have values
+// enum Status {
+//   NotStarted,
+//   InProgress,
+//   Done
+// };
+
+const s: Status = Status.NotStarted;
+
+const printStatus = (status: Status): void => {
+  switch (status) {
+    case Status.NotStarted:
+      console.log(Status.NotStarted);
+      break;
+    case Status.InProgress:
+      console.log(Status.InProgress);
+      break;
+    case Status.Done:
+      console.log(Status.Done);
+      break;
+  }
+}
+
+printStatus(s);
+
+interface Task {
+  id: string;
+  status: Status;
+};
